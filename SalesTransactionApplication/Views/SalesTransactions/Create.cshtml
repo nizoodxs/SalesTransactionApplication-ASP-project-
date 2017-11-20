@@ -1,0 +1,117 @@
+﻿@model SalesTransactionApplication.Models.SalesTransaction
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>SalesTransaction</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.SalesTransactionId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SalesTransactionId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SalesTransactionId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomerId, "CustomerName", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CustomerId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductId, "ProductName", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ProductId", null, htmlAttributes: new {id = "productBox", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { id = "rateBox", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.InvoiceId, "InvoiceId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("InvoiceId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.InvoiceId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "VwSalesTransactions")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+<script type="text/javascript">
+//    $(function () {
+  //      $("#rateBox").val({
+    //        var name :  $('#productBox').val();
+      //      source: '@Url.Action("getRate")?productName=' + name;
+        //});
+    //});
+    $(function () {
+        $("#productBox").change(function () {
+        $.ajax({
+            // edit to add steve's suggestion.
+            //url: "/ControllerName/ActionName",
+            type: "GET",
+            url: '@Url.Action("getRate","SalesTransactions")',
+            data: '{productId: "' + $("#productBox").val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                // your data could be a View or Json or what ever you returned in your action method
+                // parse your data here
+                $("#rateBox").val(data.ProductRate);
+            }
+        });
+        });
+    });
+
+</script>

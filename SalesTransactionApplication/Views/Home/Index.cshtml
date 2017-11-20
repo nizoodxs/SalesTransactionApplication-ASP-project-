@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Sales Transaction Application</h1>
+    <p class="lead">An invoice generating application for general stores.</p>
+</div>
+
+<div>
+    @Html.ActionLink("Customers", "Index", "Customers")
+    @Html.ActionLink("Products", "Index", "Products")
+    @Html.ActionLink("See All Sales Transactions", "Index", "VwSalesTransactions")
+    @Html.ActionLink("New Transaction", "Create", "SalesTransactions")
+</div>
